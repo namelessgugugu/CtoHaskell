@@ -1,5 +1,5 @@
 from src.config_loader import load_config
-from src.checker import CChecker, HaskellChecker
+from src.checker import CChecker, HaskellChecker, CGrammarError, HaskellGrammarError
 
 import pytest
 
@@ -23,7 +23,9 @@ def test_c_incorrect():
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r") as f:
         code = f.read()
-    assert checker.check(code) is not None
+    
+    with pytest.raises(CGrammarError):
+        raise checker.check(code)
 
 def test_haskell_correct():
     config_path = Path(__file__).parent / "../config/general.json"
@@ -43,5 +45,6 @@ def test_haskell_incorrect():
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
     with open(code_path, "r") as f:
         code = f.read()
-    assert checker.check(code) is not None
+    with pytest.raises(HaskellGrammarError):
+        raise checker.check(code)
     

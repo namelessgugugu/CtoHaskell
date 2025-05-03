@@ -4,6 +4,10 @@ from tempfile import NamedTemporaryFile
 from pathlib import Path
 import os, subprocess
 
+class CGrammarError(ValueError):
+    def __init__(self, error_message):
+        self.error_message = error_message
+
 class CChecker:
     def __init__(self, gcc_path):
         """
@@ -23,7 +27,7 @@ class CChecker:
         
         Returns:
             If code passes the check, None is returned,
-            otherwise a string of error message is returned.
+            otherwise CGrammarError(error_message) is **returned**, not raised.
         """
         with NamedTemporaryFile(
                 mode = "w+",
@@ -45,13 +49,19 @@ class CChecker:
                 capture_output = True
             )
             if result.returncode != 0:
-                return result.stderr \
-                    .strip() \
-                    .decode("utf-8", errors = "replace")
+                return CGrammarError(
+                        result.stderr \
+                        .strip() \
+                        .decode("utf-8", errors = "replace")
+                    )
         finally:
             os.remove(cache_name)
         
         return None
+
+class HaskellGrammarError(ValueError):
+    def __init__(self, error_message):
+        self.error_message = error_message
 
 class HaskellChecker:
     def __init__(self, ghc_path):
@@ -72,7 +82,7 @@ class HaskellChecker:
         
         Returns:
             If code passes the check, None is returned,
-            otherwise a string of error message is returned.
+            otherwise HaskellGrammarError(error_message) is **returned**, not raised.
         """
         with NamedTemporaryFile(
                 mode = "w+",
@@ -94,9 +104,11 @@ class HaskellChecker:
                 capture_output = True
             )
             if result.returncode != 0:
-                return result.stderr \
-                    .strip() \
-                    .decode("utf-8", errors = "replace")
+                return HaskellGrammarError(
+                    result.stderr \
+                        .strip() \
+                        .decode("utf-8", errors = "replace")
+                    )
         finally:
             os.remove(cache_name)
         
