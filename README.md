@@ -5,11 +5,17 @@
 ## 暂定框架
 
 `assistant.py`：提供与 LLM 对话的接口。
+
 `checker.py`：接入 GCC 与 GHC，做语法检查。
+
 `preprocessor.py`：预处理 C 代码，提取全局变量。
+
 `translator.py`：将 C 代码翻译到 Haskell 代码。
+
 `optimizer.py`：对 Haskell 代码进行优化。
+
 `verifier.py`：对 C 代码和 Haskell 代码进行对比。
+
 `ui.py`：用户界面。
 
 ## 备注
