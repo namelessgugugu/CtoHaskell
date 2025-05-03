@@ -32,4 +32,4 @@
 
 如欲测试某代码是否正确抛出异常，则用 `with pytest.raises(xxxError):` 包裹，表示该部分代码应抛出错误 `xxxError`。
 
-在项目根目录运行 `python -m pytest` 以运行测试。
+在项目根目录运行 `python -m pytest` 以运行所有测试样例，运行 `python -m pytest -vs tests/test_xxx.py` 运行指定的 `test_xxx.py` 模块。

@@ -1,4 +1,4 @@
-# Load configuration file
+# Load configuration file.
 
 from pathlib import Path
 import json

@@ -1,4 +1,4 @@
-# LLM Assistant for generate response
+# LLM Assistant for generate response.
 
 import requests
 
