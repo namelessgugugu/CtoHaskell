@@ -1,4 +1,4 @@
-from src.config_loader import load_config, JSONDecodeError
+from src.config_loader import load_config, InvalidJsonError
 
 import pytest
 
@@ -15,5 +15,5 @@ def test_config_load_not_found():
 
 def test_config_load_invalid_format():
     path = Path(__file__).parent / "data/config/incorrect.json"
-    with pytest.raises(JSONDecodeError):
+    with pytest.raises(InvalidJsonError):
         load_config(path)

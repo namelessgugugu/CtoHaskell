@@ -1,8 +1,8 @@
-# Load configuration file from director config
+# Load configuration file
 
 from pathlib import Path
 import json
-from json import JSONDecodeError
+from json import JSONDecodeError as InvalidJsonError
 
 def load_config(path):
     """
