@@ -11,7 +11,7 @@ def test_c_correct():
     checker = CChecker(gcc_path)
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
-    with open(code_path, "r") as f:
+    with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     assert checker.check(code) is None
 
@@ -21,7 +21,7 @@ def test_c_incorrect():
     checker = CChecker(gcc_path)
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
-    with open(code_path, "r") as f:
+    with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     
     with pytest.raises(CGrammarError):
@@ -33,7 +33,7 @@ def test_haskell_correct():
     checker = HaskellChecker(ghc_path)
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
-    with open(code_path, "r") as f:
+    with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     assert checker.check(code) is None
 
@@ -43,7 +43,7 @@ def test_haskell_incorrect():
     checker = HaskellChecker(ghc_path)
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
-    with open(code_path, "r") as f:
+    with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     with pytest.raises(HaskellGrammarError):
         raise checker.check(code)
