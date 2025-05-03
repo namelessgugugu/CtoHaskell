@@ -10,11 +10,11 @@ def test_assistant_correct():
     api_key = load_config(path)["API_KEY"]
     assistant = Assistant(
         api_key,
-        "Qwen/QwQ-32B",
+        "deepseek-ai/DeepSeek-R1",
         0.7,
         10
     )
-    assistant.chat([{"role": "user", "content": "Introduce yourself"}])
+    print(assistant.chat([{"role": "user", "content": "Introduce yourself"}]))
 
 
 def test_assistant_invalid():
@@ -22,7 +22,7 @@ def test_assistant_invalid():
     api_key = load_config(path)["API_KEY"]
     assistant = Assistant(
         api_key,
-        "Qwen/QwQ-32B",
+        "deepseek-ai/DeepSeek-R1",
         0.7,
         10
     )

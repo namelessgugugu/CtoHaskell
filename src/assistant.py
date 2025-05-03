@@ -1,6 +1,7 @@
 # LLM Assistant for generate response.
 
 import requests
+import json
 
 class ApiError(RuntimeError):
     def __init__(self, code):
@@ -47,11 +48,13 @@ class Assistant:
             "Authorization": "Bearer " + self._api_key,
             "Content-Type": "application/json"
         }
-        attempt = 0
-        while True:
+        for retry in range(self._retry_limit):
             response = requests.request("POST", url, json = payload, headers = headers)
             if response.status_code == 200:
-                return response.text
-            attempt += 1
-            if attempt > self._retry_limit:
+                return json.loads(response.text) \
+                    ["choices"] \
+                    [0] \
+                    ["message"] \
+                    ["content"]
+            if retry + 1 == self._retry_limit:
                 raise ApiError(response.status_code)
