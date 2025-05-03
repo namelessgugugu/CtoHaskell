@@ -14,7 +14,7 @@ def test_assistant_correct():
         0.7,
         10
     )
-    print(assistant.chat([{"role": "user", "content": "Introduce yourself"}]))
+    assistant.chat([{"role": "user", "content": "Introduce yourself"}])
 
 
 def test_assistant_invalid():
