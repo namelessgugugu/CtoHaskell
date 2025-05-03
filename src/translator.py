@@ -13,7 +13,7 @@ class Translator:
         self.assistant = assistant
         self.retry_limit = retry_limit
         self.Hchecker = HaskellChecker()
-        self.Cchecker = HaskellChecker()
+        self.Cchecker = CChecker()
     
     def translate(self, code):
         """
