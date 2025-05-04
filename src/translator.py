@@ -25,6 +25,7 @@ class Translator:
             gcc_path - path of gcc.
             fake_libc_path - path of fake_libc_include.
             ghc_path - path of ghc.
+            system_prompt - prompt to guide llm.
             retry_limit - maximum number of retries if llm generates
                 grammatically wrong code.
         """
