@@ -9,6 +9,9 @@ from verifier import Verifier
 
 class CtoHaskell:
     def __init__(self):
+        """
+        Preprocess all required modules.
+        """
         self.config = load_config(Path(__file__).parent / "../config/general.json")
         self.secret = load_config(Path(__file__).parent / "../config/secret.json")
         self.gcc_path = self.config["PATH"]["GCC"]
@@ -47,6 +50,15 @@ class CtoHaskell:
             retry_limit=self.retry_limit
         )
     def run(self, input_code):
+        """
+        Translate C to Haskell.
+
+        Parameters:
+            input_code - C code to be translated.
+
+        Returns:
+            Haskell code.
+        """
         translate_code = self.translator.translate(input_code)
         optimized_code = self.optimizer.optimize(translate_code)
         verified_code = self.verifier.verify(input_code,optimized_code)
