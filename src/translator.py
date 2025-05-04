@@ -1,19 +1,38 @@
-from checker import HaskellChecker,CChecker
+# Translate C code to Haskell.
+
+from .checker import HaskellChecker
+from .preprocessor import Preprocessor
+
+class TranslateError(RuntimeError):
+    def __init__(self):
+        pass
 
 class Translator:
-    def __init__(self, assistant, retry_limit):
+    def __init__(
+            self,
+            assistant,
+            gcc_path,
+            fake_libc_path,
+            ghc_path,
+            system_prompt,
+            retry_limit
+        ):
         """
         Create a translator with given assistant.
 
         Parameters:
             assistant - an Assistant from assistant.py.
+            gcc_path - path of gcc.
+            fake_libc_path - path of fake_libc_include.
+            ghc_path - path of ghc.
             retry_limit - maximum number of retries if llm generates
                 grammatically wrong code.
         """
-        self.assistant = assistant
-        self.retry_limit = retry_limit
-        self.Hchecker = HaskellChecker()
-        self.Cchecker = CChecker()
+        self._assistant = assistant
+        self._preprocessor = Preprocessor(gcc_path, fake_libc_path)
+        self._haskell_checker = HaskellChecker(ghc_path)
+        self._system_prompt = system_prompt
+        self._retry_limit = retry_limit
     
     def translate(self, code):
         """
@@ -26,44 +45,45 @@ class Translator:
             Haskell code.
         
         Raises:
+            ApiError(code) - response has an unsuccessful status code, after
+                assistant._retry_limit retries.
+            CGrammarError - code is not a valid C code.
+            ParseError - code cannot be parsed by pycparser.
             TranslateError - llm generates grammatically wrong code,
                 after retry_limit retries.
         """
-        Cerror = self.Cchecker.check(code)
-        if Cerror is None:
-            for i in range(self.retry_limit):
-                print(f"[Translator] Attempt {i + 1} to translate...")
+        head_files, global_varibles, other = self._preprocessor.preprocess(code)
+        messages = [
+            {
+                "role": "system",
+                "content": self._system_prompt
+            },
+            {
+                "role": "user",
+                "content": f"head files:\n{head_files}\n\n" \
+                           + f"global varibles:\n{global_varibles}\n\n" \
+                           + f"other parts:\n{other}"
+            }
+        ]
 
-                messages = [
-                    {
-                        "role": "system",
-                        "content": (
-                            "你是一个将 C 语言代码转换为 Haskell 的助手。"
-                            "请用 Idiomatic Haskell 代码保留 C 语言代码原始功能。"
-                        )
-                    },
-                    {
-                        "role": "user",
-                        "content": f"请将下面的 C 语言代码翻译成 Haskell：\n{code}"
-                    }
-                ]
+        for _ in range(self._retry_limit):
+            reply = self._assistant.chat(messages)
 
-                try:
-                    reply = self.assistant.chat(messages)
-                except Exception as error:
-                    print(f"[Translator] Assistant error: {error}")
-                    continue
-
-                error_message = self.Hchecker.check(reply)
-                if error_message is None:
-                    print("[Translator] Translation passed syntax check.")
-                    return reply
-                else:
-                    print(f"[Translator] Translated Haskell code failed syntax check: {error_message}")
-                    print("[Translator] Retrying translation...")
-
-            print("[Translator] Translation failed after retries.")
-            return None
-        else:
-            print(f"[Translator] Your C code failed syntax check: {Cerror}")
-            return None
+            result = self._haskell_checker.check(reply)
+            if result is None:
+                return reply
+            else:
+                messages.append(
+                        {
+                            "role": "assistant",
+                            "content": reply
+                        }
+                    )
+                messages.append(
+                        {
+                            "role": "user",
+                            "content": "Your generation is wrong, here is error message:\n"
+                                       + result.error_message
+                        }
+                    )
+        raise TranslateError

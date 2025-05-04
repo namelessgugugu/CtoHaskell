@@ -1,14 +1,17 @@
-from src.config_loader import load_config
+from src.loader import load_config
 from src.checker import CChecker, HaskellChecker, CGrammarError, HaskellGrammarError
 
 import pytest
 
 from pathlib import Path
 
-def test_c_correct():
+def create_c_checker():
     config_path = Path(__file__).parent / "../config/general.json"
     gcc_path = load_config(config_path)["PATH"]["GCC"]
-    checker = CChecker(gcc_path)
+    return CChecker(gcc_path)
+
+def test_c_correct():
+    checker = create_c_checker()
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -16,9 +19,7 @@ def test_c_correct():
     assert checker.check(code) is None
 
 def test_c_incorrect():
-    config_path = Path(__file__).parent / "../config/general.json"
-    gcc_path = load_config(config_path)["PATH"]["GCC"]
-    checker = CChecker(gcc_path)
+    checker = create_c_checker()
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -27,10 +28,13 @@ def test_c_incorrect():
     with pytest.raises(CGrammarError):
         raise checker.check(code)
 
-def test_haskell_correct():
+def create_haskell_checker():
     config_path = Path(__file__).parent / "../config/general.json"
     ghc_path = load_config(config_path)["PATH"]["GHC"]
-    checker = HaskellChecker(ghc_path)
+    return HaskellChecker(ghc_path)
+
+def test_haskell_correct():
+    checker = create_haskell_checker()
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -38,10 +42,8 @@ def test_haskell_correct():
     assert checker.check(code) is None
 
 def test_haskell_incorrect():
-    config_path = Path(__file__).parent / "../config/general.json"
-    ghc_path = load_config(config_path)["PATH"]["GHC"]
-    checker = HaskellChecker(ghc_path)
-
+    checker = create_haskell_checker()
+    
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()

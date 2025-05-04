@@ -1,4 +1,4 @@
-from src.config_loader import load_config
+from src.loader import load_config
 from src.assistant import Assistant, ApiError
 
 import pytest

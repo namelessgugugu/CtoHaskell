@@ -1,4 +1,4 @@
-from src.config_loader import load_config, InvalidJsonError
+from src.loader import load_config, InvalidJsonError
 
 import pytest
 
