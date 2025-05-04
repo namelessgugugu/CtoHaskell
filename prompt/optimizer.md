@@ -26,6 +26,6 @@ Preference is encouraged to be followed. But if you have failed some times, dono
 
   - Make use of high-order functions like `foldl`, `scanl`.
 
-  - Use features of functional programming like functor and monad.
+  - Make use of features of functional programming like functor and monad.
 
   - Do no optimization and print original code if you think it is good enough.

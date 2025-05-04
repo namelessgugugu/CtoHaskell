@@ -13,7 +13,7 @@ def create_preprocessor():
     return Preprocessor(gcc_path, fake_libc_path)
 
 def test_preprocessor_correct():
-    preprocessor = create_preprocessor
+    preprocessor = create_preprocessor()
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -24,7 +24,7 @@ def test_preprocessor_correct():
     assert other == "int main(void)\n{\n  scanf(\"%d%d\", &a, &b);\n  printf(\"%d\\n\", a + b);\n  return 0;\n}"
 
 def test_preprocessor_ce():
-    preprocessor = create_preprocessor
+    preprocessor = create_preprocessor()
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -33,7 +33,7 @@ def test_preprocessor_ce():
         preprocessor.preprocess(code)
 
 def test_preprocessor_pe():
-    preprocessor = create_preprocessor
+    preprocessor = create_preprocessor()
 
     code_path = Path(__file__).parent / "data/code/fea_c11.c"
     with open(code_path, "r", encoding = "utf-8") as f:

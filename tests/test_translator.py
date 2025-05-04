@@ -1,5 +1,5 @@
 from src.loader import load_config, load_prompt
-from src.assistant import Assistant
+from src.assistant import Assistant, ApiError
 from src.checker import CGrammarError
 from src.preprocessor import ParseError
 from src.translator import Translator, TranslateError
@@ -8,7 +8,7 @@ import pytest
 
 from pathlib import Path
 
-def create_translator():
+def create_translator(model):
     secret_path = Path(__file__).parent / "../config/secret.json"
     api_key = load_config(secret_path)["API_KEY"]
 
@@ -16,7 +16,7 @@ def create_translator():
     config = load_config(config_path)
     assistant = Assistant(
         api_key,
-        "deepseek-ai/DeepSeek-R1",
+        model,
         0.7,
         10
     )
@@ -30,7 +30,7 @@ def create_translator():
     return Translator(assistant, gcc_path, fake_libc_path, ghc_path, system_prompt, 3)
 
 def test_translator_correct():
-    translator = create_translator()
+    translator = create_translator("deepseek-ai/DeepSeek-V3")
 
     code_path = Path(__file__).parent / "data/code/prefix.c"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -43,7 +43,7 @@ def test_translator_correct():
         pass
 
 def test_translator_ce():
-    translator = create_translator()
+    translator = create_translator("deepseek-ai/DeepSeek-V3")
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -53,11 +53,21 @@ def test_translator_ce():
         translator.translate(code)
 
 def test_translator_pe():
-    translator = create_translator()
+    translator = create_translator("deepseek-ai/DeepSeek-V3")
 
     code_path = Path(__file__).parent / "data/code/fea_c11.c"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     
     with pytest.raises(ParseError):
+        translator.translate(code)
+
+def test_translator_ae():
+    translator = create_translator("Wrong Model")
+
+    code_path = Path(__file__).parent / "data/code/prefix.c"
+    with open(code_path, "r", encoding = "utf-8") as f:
+        code = f.read()
+    
+    with pytest.raises(ApiError):
         translator.translate(code)

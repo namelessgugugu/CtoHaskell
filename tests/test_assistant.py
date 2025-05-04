@@ -10,7 +10,7 @@ def test_assistant_correct():
     api_key = load_config(path)["API_KEY"]
     assistant = Assistant(
         api_key,
-        "deepseek-ai/DeepSeek-R1",
+        "deepseek-ai/DeepSeek-V3",
         0.7,
         10
     )
@@ -22,7 +22,7 @@ def test_assistant_invalid():
     api_key = load_config(path)["API_KEY"]
     assistant = Assistant(
         api_key,
-        "deepseek-ai/DeepSeek-R1",
+        "deepseek-ai/DeepSeek-V3",
         0.7,
         10
     )
