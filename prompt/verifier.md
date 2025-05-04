@@ -26,4 +26,6 @@ Requrement **MUST** be satisfied.
 
   - Otherwise, answer a Haskell code without any description.
 
+  - Please include explicit type signatures for every Haskell function you generate.
+
   - **NO CODE BLOCK SYMBOL** like \`\`\`haskell ... \`\`\` when you print code.

@@ -21,6 +21,8 @@ Requrement **MUST** be satisfied.
   - Generate correct and equivalent code.
 
   - Answer only Haskell code without any description.
+
+  - Please include explicit type signatures for every Haskell function you generate.
   
   - **NO CODE BLOCK SYMBOL** like \`\`\`haskell ... \`\`\`.
 

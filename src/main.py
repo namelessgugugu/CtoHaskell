@@ -1,11 +1,11 @@
 from pathlib import Path
-from loader import load_config, load_prompt
-from assistant import Assistant
-from checker import CChecker, HaskellChecker
-from preprocessor import Preprocessor
-from translator import Translator
-from optimizer import Optimizer
-from verifier import Verifier
+from .loader import load_config, load_prompt
+from .assistant import Assistant
+from .checker import CChecker, HaskellChecker
+from .preprocessor import Preprocessor
+from .translator import Translator
+from .optimizer import Optimizer
+from .verifier import Verifier
 
 class CtoHaskell:
     def __init__(self):
@@ -31,14 +31,14 @@ class CtoHaskell:
             gcc_path=self.gcc_path,
             fake_libc_path=self.fake_libc_path,
             ghc_path=self.ghc_path,
-            system_prompt=load_prompt(Path(__file__).parent / "prompt" / "translator.md"),
+            system_prompt=load_prompt(Path(__file__).parent / "../prompt/translator.md"),
             retry_limit=self.retry_limit
         )
 
         self.optimizer = Optimizer(
             assistant=self.assistant,
             ghc_path=self.ghc_path,
-            system_prompt=load_prompt(Path(__file__).parent / "prompt" / "optimizer.md"),
+            system_prompt=load_prompt(Path(__file__).parent / "../prompt/optimizer.md"),
             retry_limit=self.retry_limit
         )
 
@@ -46,7 +46,7 @@ class CtoHaskell:
             assistant=self.assistant,
             gcc_path=self.gcc_path,
             ghc_path=self.ghc_path,
-            system_prompt=load_prompt(Path(__file__).parent / "prompt" / "verifier.md"),
+            system_prompt=load_prompt(Path(__file__).parent / "../prompt" / "verifier.md"),
             retry_limit=self.retry_limit
         )
     def run(self, input_code):
