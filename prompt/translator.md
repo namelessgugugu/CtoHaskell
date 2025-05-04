@@ -33,5 +33,3 @@ Preference is encouraged to be followed. But if you have failed some times, dono
   - When translating a single function, first understand its functionality, then write a more Haskell-idiomatic version in Haskell, instead of translating every statement.
 
   - Find elegant way to eliminate global varibles. Packing them into a data type and pass them with state monad is ok, but more concise method is better.
-
-
