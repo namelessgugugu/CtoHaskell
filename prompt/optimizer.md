@@ -20,6 +20,8 @@ Requrement **MUST** be satisfied.
   
   - **NO CODE BLOCK SYMBOL** like \`\`\`haskell ... \`\`\`.
 
+  - **NO EXPLANATION** for your answer.
+
 ### Preference
 
 Preference is encouraged to be followed. But if you have failed some times, donot stuck in following all preference, make requirements satisfied first.
@@ -31,3 +33,7 @@ Preference is encouraged to be followed. But if you have failed some times, dono
   - Make use of features of functional programming like functor and monad.
 
   - Do no optimization and print original code if you think it is good enough.
+
+### Note
+
+  - If you think your generation is correct but error message is returned, check out if you actually answer extra infomation(like \`\`\` and extra descriptions). Your answer will be compiled without any process, so do not answer extra information.

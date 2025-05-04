@@ -26,6 +26,8 @@ Requrement **MUST** be satisfied.
   
   - **NO CODE BLOCK SYMBOL** like \`\`\`haskell ... \`\`\`.
 
+  - **NO EXPLANATION** for your answer.
+
 ### Preference
 
 Preference is encouraged to be followed. But if you have failed some times, donot stuck in following all preference, make requirements satisfied first.
@@ -35,3 +37,7 @@ Preference is encouraged to be followed. But if you have failed some times, dono
   - When translating a single function, first understand its functionality, then write a more Haskell-idiomatic version in Haskell, instead of translating every statement.
 
   - Find elegant way to eliminate global varibles. Packing them into a data type and pass them with state monad is ok, but more concise method is better.
+
+### Note
+
+  - If you think your generation is correct but error message is returned, check out if you actually answer extra infomation(like \`\`\` and extra descriptions). Your answer will be compiled without any process, so do not answer extra information.
