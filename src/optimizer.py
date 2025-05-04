@@ -1,3 +1,5 @@
+# Optimize Haskell code.
+
 from .checker import HaskellChecker
 
 class OptimizeError(RuntimeError):

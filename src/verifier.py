@@ -1,5 +1,5 @@
 class Verifier:
-    def __init__(self, assistant, retry_limit):
+    def __init__(self, assistant, ghc_path, gcc_path, system_prompt, retry_limit):
         """
         Create a Verifiers with given assistant.
 
@@ -8,7 +8,7 @@ class Verifier:
             retry_limit - maximum number of retries if llm generates
                 grammatically wrong code.
         """
-        pass
+        self
     
     def verify(self, c_code, haskell_code):
         """
