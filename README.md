@@ -292,8 +292,7 @@ class Verifier:
 
 `main.py`：将 C 语言代码转到 Haskell 完成后的代码。
 
-```
-
+```python
 class CtoHaskell:
     def __init__(self):
             """
