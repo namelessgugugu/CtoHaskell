@@ -1,7 +1,7 @@
 {
     "PATH": {
         "GCC": "./external/mingw64/bin/gcc.exe",
-        "FAKE_LIB": "./external/fake_libc_include",
+        "FAKE_LIBC": "./external/fake_libc_include",
         "GHC": "./external/ghc-9.6.7/bin/ghc.exe"
     }
 }
