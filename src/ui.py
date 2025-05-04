@@ -1,10 +1,12 @@
+# GUI
+
 import tkinter as tk
 from tkinter import ttk, messagebox
-from .checker import CGrammarError
-from .main import CtoHaskell
 
-class CodeTranslatorUI:
-    def __init__(self, master):
+from .translator import Translator, TranslateError
+
+class TranslatorUI:
+    def __init__(self, master, translator):
         self.master = master
         master.title("C to Haskell Translator")
         # 设置字体
@@ -14,7 +16,7 @@ class CodeTranslatorUI:
         self.create_widgets(text_font)
         
         # 初始化转换器
-        self.translator = CtoHaskell()
+        self.translator = translator
         # 绑定事件
         self.input_text.bind('<KeyRelease>', self.update_line_numbers)
         self.input_text.bind('<Configure>', self.update_line_numbers)
@@ -151,7 +153,7 @@ class CodeTranslatorUI:
         
         try:
             # 执行转换
-            haskell_code = self.translator.run(input_code)
+            haskell_code = self.translator.translate(input_code)
             
             # 显示结果
             self.output_text.config(state=tk.NORMAL)
@@ -162,19 +164,5 @@ class CodeTranslatorUI:
             # 更新输出行号
             self.update_output_line_numbers()
             
-        except CGrammarError as e:
-            messagebox.showerror("Syntax Error", 
-                               f"The input code is not valid C code.\n{e.error_message}")
-        except Exception as e:
-            messagebox.showerror("Translation Error", 
-                               f"Failed to generate Haskell code: {str(e)}")
-
-
-def main():
-    root = tk.Tk()
-    app = CodeTranslatorUI(root)
-    root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
+        except TranslateError as e:
+            messagebox.showerror("Error", e.error_message)

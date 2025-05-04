@@ -3,11 +3,11 @@
 from .checker import HaskellChecker
 from .preprocessor import Preprocessor
 
-class TranslateError(RuntimeError):
+class PTranslateError(RuntimeError):
     def __init__(self):
         pass
 
-class Translator:
+class PTranslator:
     def __init__(
             self,
             assistant,
@@ -87,4 +87,4 @@ class Translator:
                                        + result.error_message
                         }
                     )
-        raise TranslateError
+        raise PTranslateError

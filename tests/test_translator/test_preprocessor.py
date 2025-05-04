@@ -1,13 +1,13 @@
 from src.loader import load_config
-from src.checker import CGrammarError
-from src.preprocessor import Preprocessor, ParseError
+from src.translator.checker import CGrammarError
+from src.translator.preprocessor import Preprocessor, ParseError
 
 import pytest
 
 from pathlib import Path
 
 def create_preprocessor():
-    config_path = Path(__file__).parent / "../config/general.json"
+    config_path = Path(__file__).parent / "../../config/general.json"
     gcc_path = load_config(config_path)["PATH"]["GCC"]
     fake_libc_path = load_config(config_path)["PATH"]["FAKE_LIBC"]
     return Preprocessor(gcc_path, fake_libc_path)
@@ -15,7 +15,7 @@ def create_preprocessor():
 def test_preprocessor_correct():
     preprocessor = create_preprocessor()
 
-    code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
+    code_path = Path(__file__).parent / "../data/code/aplusb_in_c.c"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     head_file, global_varibles, other = preprocessor.preprocess(code)
@@ -26,7 +26,7 @@ def test_preprocessor_correct():
 def test_preprocessor_ce():
     preprocessor = create_preprocessor()
 
-    code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
+    code_path = Path(__file__).parent / "../data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     with pytest.raises(CGrammarError):
@@ -35,7 +35,7 @@ def test_preprocessor_ce():
 def test_preprocessor_pe():
     preprocessor = create_preprocessor()
 
-    code_path = Path(__file__).parent / "data/code/fea_c11.c"
+    code_path = Path(__file__).parent / "../data/code/fea_c11.c"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     with pytest.raises(ParseError):
