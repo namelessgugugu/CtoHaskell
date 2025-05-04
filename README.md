@@ -293,20 +293,22 @@ class Verifier:
 `main.py`：将 C 语言代码转到 Haskell 完成后的代码。
 
 ```
-def __init__(self):
-        """
-        Preprocess all required modules.
-        """
-def run(self, input_code):
-        """
-        Translate C to Haskell.
 
-        Parameters:
-            input_code - C code to be translated.
+class CtoHaskell:
+    def __init__(self):
+            """
+            Preprocess all required modules.
+            """
+    def run(self, input_code):
+            """
+            Translate C to Haskell.
 
-        Returns:
-            Haskell code.
-        """
+            Parameters:
+                input_code - C code to be translated.
+
+            Returns:
+                Haskell code.
+            """
 ```
 
 
