@@ -17,8 +17,11 @@ class Translator:
         """
         Create a complete translator.
         """
-        config = load_config(Path(__file__).parent / "../../config/general.json")
-        secret = load_config(Path(__file__).parent / "../../config/secret.json")
+        from ..loader import load_config
+        config = load_config("config/general.json")
+        secret = load_config("config/secret.json")
+        # config = load_config(Path(__file__).parent / "../../config/general.json")
+        # secret = load_config(Path(__file__).parent / "../../config/secret.json")
 
         gcc_path = config["PATH"]["GCC"]
         fake_libc_path = config["PATH"]["FAKE_LIBC"]

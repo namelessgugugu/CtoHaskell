@@ -1,7 +1,19 @@
 # Translate C code to Haskell.
 
-from .checker import HaskellChecker
-from .preprocessor import Preprocessor
+import os
+import sys
+import tkinter as tk
+# 动态兼容打包后的模块路径
+if getattr(sys, 'frozen', False):  # 判断是否在 PyInstaller 打包环境中
+    BASE_DIR = sys._MEIPASS  # PyInstaller 解压临时文件的路径
+else:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 将项目根目录和 src 目录添加到 Python 路径
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
+from src.translator.checker import HaskellChecker
+from src.translator.preprocessor import Preprocessor
 
 class PTranslateError(RuntimeError):
     def __init__(self):

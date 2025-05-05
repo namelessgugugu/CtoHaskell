@@ -3,6 +3,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+import sys
+import os
+if getattr(sys, 'frozen', False):
+    # 如果是 PyInstaller 打包环境
+    sys.path.insert(0, os.path.join(sys._MEIPASS, 'src'))
+else:
+    # 正常运行时，确保能正确找到 src/loader.py
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from loader import load_config, load_prompt  # 使用绝对导入
+
 from .translator import Translator, TranslateError
 
 class TranslatorUI:
