@@ -11,9 +11,9 @@ if getattr(sys, 'frozen', False):
 else:
     # 正常运行时，确保能正确找到 src/loader.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from loader import load_config, load_prompt  # 使用绝对导入
+from src.loader import load_config, load_prompt  # 使用绝对导入
 
-from .translator import Translator, TranslateError
+from src.translator import Translator, TranslateError
 
 class TranslatorUI:
     def __init__(self, master, translator):

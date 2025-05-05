@@ -18,7 +18,7 @@ a = Analysis(
     
     # 必须包含的数据文件（解决FileNotFoundError核心配置）
     datas=[
-        (f'{CONFIG_DIR}/*.json', CONFIG_DIR),  # 打包所有配置文件
+        # (f'{CONFIG_DIR}/*.json', CONFIG_DIR),  # 打包所有配置文件
         (f'{PROMPT_DIR}/*', PROMPT_DIR),       # 打包所有提示文件
         
         # 如果存在其他资源文件也要显式添加，例如：

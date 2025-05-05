@@ -6,11 +6,36 @@ from .p_translator import PTranslator, PTranslateError
 from .optimizer import Optimizer, OptimizeError
 from .verifier import Verifier, VerifierError
 
+import sys
+import os
 from pathlib import Path
 
 class TranslateError(RuntimeError):
     def __init__(self, error_message):
         self.error_message = error_message
+
+def find_config_path(filename="general.json"):
+    """智能查找配置文件路径（优先外部文件）"""
+    search_paths = [
+        # 1. 优先找EXE同级目录下的config文件夹（适用于打包后）
+        Path(sys.executable).parent / "config" / filename,
+        
+        # 2. 开发环境路径（适用于调试）
+        Path(__file__).parent.parent / "config" / filename,
+
+        Path(__file__).parent.parent.parent / "config" / filename,
+        
+        # 3. 直接当前目录（简易用法）
+        Path.cwd() / filename,
+    ]
+    
+    for path in search_paths:
+        if path.exists():
+            print (str(path))
+            return str(path)
+    
+    raise FileNotFoundError(f"{filename} not found in: {[str(p) for p in search_paths]}")
+
 
 class Translator:
     def __init__(self):
@@ -18,14 +43,18 @@ class Translator:
         Create a complete translator.
         """
         from ..loader import load_config
-        config = load_config("config/general.json")
-        secret = load_config("config/secret.json")
+        config = load_config(find_config_path("general.json"))
+        secret = load_config(find_config_path("secret.json"))
+        # config = load_config("config/general.json")
+        # secret = load_config("config/secret.json")
         # config = load_config(Path(__file__).parent / "../../config/general.json")
         # secret = load_config(Path(__file__).parent / "../../config/secret.json")
 
         gcc_path = config["PATH"]["GCC"]
+        print(gcc_path)
         fake_libc_path = config["PATH"]["FAKE_LIBC"]
         ghc_path = config["PATH"]["GHC"]
+        print(ghc_path)
         temperature = config["TEMPERATURE"]
         model = config["MODEL"]
         api_key = secret["API_KEY"]
