@@ -4,7 +4,6 @@
     "RETRY_LIMIT": 10,
     "PATH": {
         "GCC": "gcc.exe",
-        "FAKE_LIBC": "./external/fake_libc_include",
         "GHC": "ghc.exe"
     }
 }

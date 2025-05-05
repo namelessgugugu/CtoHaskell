@@ -52,7 +52,7 @@ class Translator:
 
         gcc_path = config["PATH"]["GCC"]
         print(gcc_path)
-        fake_libc_path = config["PATH"]["FAKE_LIBC"]
+        fake_libc_path = "external/fake_libc_include"
         ghc_path = config["PATH"]["GHC"]
         print(ghc_path)
         temperature = config["TEMPERATURE"]
