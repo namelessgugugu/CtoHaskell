@@ -1,7 +1,7 @@
 {
     "MODEL": "deepseek-ai/DeepSeek-V3",
     "TEMPERATURE": 0.7,
-    "RETRY_LIMIT": 10,
+    "RETRY_LIMIT": 5,
     "PATH": {
         "GCC": "gcc.exe",
         "FAKE_LIBC": "./external/fake_libc_include",

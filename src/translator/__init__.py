@@ -4,7 +4,7 @@ from .checker import CChecker, HaskellChecker, CGrammarError
 from .preprocessor import Preprocessor, ParseError
 from .p_translator import PTranslator, PTranslateError
 from .optimizer import Optimizer, OptimizeError
-from .verifier import Verifier, VerifierError
+from .meaning_fixer import Meaningfixer, MeaningfixError
 from .grammar_fixer import Grammarfixer, GrammarfixError
 from .agent import Agent
 
@@ -39,7 +39,7 @@ class Translator:
 
         p_translator_prompt = load_prompt(Path(__file__).parent / "../../prompt/p_translator.md")
         optimizer_prompt = load_prompt(Path(__file__).parent / "../../prompt/optimizer.md")
-        verifier_prompt = load_prompt(Path(__file__).parent / "../../prompt/verifier.md")
+        verifier_prompt = load_prompt(Path(__file__).parent / "../../prompt/meaning_fixer.md")
         grammar_fixer_prompt = load_prompt(Path(__file__).parent / "../../prompt/grammar_fixer.md")
         agent_prompt = load_prompt(Path(__file__).parent / "../../prompt/agent.md")
 
@@ -66,7 +66,7 @@ class Translator:
             retry_limit
         )
 
-        self._verifier = Verifier(
+        self._meaningfixer = Meaningfixer(
             assistant,
             gcc_path,
             ghc_path,
@@ -80,7 +80,7 @@ class Translator:
             ghc_path,
             self._grammar_fixer,
             self._optimizer,
-            self._verifier,
+            self._meaningfixer,
             retry_limit
         )
 
@@ -106,6 +106,6 @@ class Translator:
             raise TranslateError(f"Invalid input.\n{cge.error_message}")
         except ParseError:
             raise TranslateError("Fail to parse C file.")
-        except (PTranslateError,GrammarfixError ,OptimizeError, VerifierError):
+        except (PTranslateError,GrammarfixError ,OptimizeError, MeaningfixError):
             raise TranslateError("Fail to translate Haskell code.")
         return verified_code

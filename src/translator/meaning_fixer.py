@@ -2,11 +2,11 @@
 
 from .checker import CChecker, HaskellChecker
 
-class VerifierError(RuntimeError):
+class MeaningfixError(RuntimeError):
     def __init__(self):
         pass
 
-class Verifier:
+class Meaningfixer:
     def __init__(self, assistant, gcc_path, ghc_path, system_prompt, retry_limit):
         """
         Create a Verifiers with given assistant.
@@ -22,7 +22,7 @@ class Verifier:
         self._system_prompt = system_prompt
         self._retry_limit = retry_limit
     
-    def verify(self, c_code, haskell_code):
+    def meaning_fix(self, c_code, haskell_code):
         """
         Verify whether c_code and haskell_code are the same.
 
@@ -82,4 +82,4 @@ class Verifier:
                                        + result.error_message
                         }
                     )
-        raise VerifierError
+        raise MeaningfixError

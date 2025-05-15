@@ -57,6 +57,12 @@ class Agent:
             )
             # `grammer_fix`, `optimize`, `meaning_fix`, `pass`
             reply = self._assistant.chat(messages)
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": reply
+                }
+            )
             print(f"Debug: now={_},{reply}")
             if reply == "pass":
                 return self.Haskell_code
@@ -65,7 +71,7 @@ class Agent:
             elif reply == "optimize":
                 self.Haskell_code = self._optimizer.optimize(self.Haskell_code)
             elif reply == "meaning_fix":
-                self.Haskell_code = self._meaning_fixer.verify(self.C_code,self.Haskell_code)
+                self.Haskell_code = self._meaning_fixer.meaning_fix(self.C_code,self.Haskell_code)
             else:
                 continue
         return self.Haskell_code
