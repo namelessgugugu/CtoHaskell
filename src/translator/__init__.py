@@ -5,6 +5,8 @@ from .preprocessor import Preprocessor, ParseError
 from .p_translator import PTranslator, PTranslateError
 from .optimizer import Optimizer, OptimizeError
 from .verifier import Verifier, VerifierError
+from .grammar_fixer import Grammarfixer, GrammarfixError
+from .agent import Agent
 
 from pathlib import Path
 
@@ -38,6 +40,8 @@ class Translator:
         p_translator_prompt = load_prompt(Path(__file__).parent / "../../prompt/p_translator.md")
         optimizer_prompt = load_prompt(Path(__file__).parent / "../../prompt/optimizer.md")
         verifier_prompt = load_prompt(Path(__file__).parent / "../../prompt/verifier.md")
+        grammar_fixer_prompt = load_prompt(Path(__file__).parent / "../../prompt/grammar_fixer.md")
+        agent_prompt = load_prompt(Path(__file__).parent / "../../prompt/agent.md")
 
         self._p_translator = PTranslator(
             assistant,
@@ -45,6 +49,13 @@ class Translator:
             fake_libc_path,
             ghc_path,
             p_translator_prompt,
+            retry_limit
+        )
+
+        self._grammar_fixer = Grammarfixer(
+            assistant,
+            ghc_path,
+            grammar_fixer_prompt,
             retry_limit
         )
 
@@ -62,6 +73,17 @@ class Translator:
             verifier_prompt,
             retry_limit
         )
+
+        self._agent = Agent(
+            assistant,
+            agent_prompt,
+            ghc_path,
+            self._grammar_fixer,
+            self._optimizer,
+            self._verifier,
+            retry_limit
+        )
+
     def translate(self, code):
         """
         Translate C to Haskell.
@@ -77,14 +99,13 @@ class Translator:
         """
         try:
             translate_code = self._p_translator.translate(code)
-            optimized_code = self._optimizer.optimize(translate_code)
-            verified_code = self._verifier.verify(code, optimized_code)
+            verified_code = self._agent.run(code, translate_code)
         except ApiError as ae:
             raise TranslateError(f"Fail to call API. Code {ae.code}.")
         except CGrammarError as cge:
             raise TranslateError(f"Invalid input.\n{cge.error_message}")
         except ParseError:
             raise TranslateError("Fail to parse C file.")
-        except (PTranslateError, OptimizeError, VerifierError):
+        except (PTranslateError,GrammarfixError ,OptimizeError, VerifierError):
             raise TranslateError("Fail to translate Haskell code.")
         return verified_code
