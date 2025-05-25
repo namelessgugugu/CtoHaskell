@@ -66,7 +66,7 @@ class Agent:
                     "content": reply
                 }
             )
-            print(f"Debug: now={_},{reply},{haskell_code}")
+            # print(f"Debug: now={_},{reply},{haskell_code}")
             if reply == "pass":
                 return haskell_code
             elif reply == "grammar_fix":

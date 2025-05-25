@@ -1,4 +1,4 @@
-from src.loader import load_config
+from src.loader import load_configs
 from src.assistant import Assistant, ApiError
 
 import pytest
@@ -6,8 +6,8 @@ import pytest
 from pathlib import Path
 
 def test_assistant_correct():
-    path = Path(__file__).parent / "../config/secret.json"
-    api_key = load_config(path)["API_KEY"]
+    path = Path(__file__).parent / "../config"
+    api_key = load_configs(path)["SECRET"]["API_KEY"]
     assistant = Assistant(
         api_key,
         "deepseek-ai/DeepSeek-V3",
@@ -18,8 +18,8 @@ def test_assistant_correct():
 
 
 def test_assistant_invalid():
-    path = Path(__file__).parent / "../config/secret.json"
-    api_key = load_config(path)["API_KEY"]
+    path = Path(__file__).parent / "../config"
+    api_key = load_configs(path)["SECRET"]["API_KEY"]
     assistant = Assistant(
         api_key,
         "deepseek-ai/DeepSeek-V3",

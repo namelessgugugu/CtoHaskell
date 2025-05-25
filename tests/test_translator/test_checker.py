@@ -1,4 +1,4 @@
-from src.loader import load_config
+from src.loader import load_configs
 from src.translator.checker import CChecker, HaskellChecker, CGrammarError, HaskellGrammarError
 
 import pytest
@@ -6,8 +6,8 @@ import pytest
 from pathlib import Path
 
 def create_c_checker():
-    config_path = Path(__file__).parent / "../../config/general.json"
-    gcc_path = load_config(config_path)["PATH"]["GCC"]
+    config_path = Path(__file__).parent / "../../config"
+    gcc_path = load_configs(config_path)["GENERAL"]["PATH"]["GCC"]
     return CChecker(gcc_path)
 
 def test_c_correct():
@@ -29,8 +29,8 @@ def test_c_incorrect():
         raise checker.check(code)
 
 def create_haskell_checker():
-    config_path = Path(__file__).parent / "../../config/general.json"
-    ghc_path = load_config(config_path)["PATH"]["GHC"]
+    config_path = Path(__file__).parent / "../../config"
+    ghc_path = load_configs(config_path)["GENERAL"]["PATH"]["GHC"]
     return HaskellChecker(ghc_path)
 
 def test_haskell_correct():

@@ -69,7 +69,7 @@ class PTranslator:
 
         for _ in range(self._retry_limit):
             reply = self._assistant.chat(messages)
-            print(f"{reply}\n")
+            # print(f"{reply}\n")
             result = self._haskell_checker.check(reply)
             if result is None:
                 return reply

@@ -1,13 +1,20 @@
 from src.translator import Translator, TranslateError
+from src.loader import load_configs, load_prompts
 
 import pytest
 
 from pathlib import Path
 
 def test_translator_correct():
-    translator = Translator()
+    
+    config_path = Path(__file__).parent / "../config"
+    configs = load_configs(config_path)
+    prompt_path = Path(__file__).parent / "../prompt"
+    prompts = load_prompts(prompt_path)
 
-    code_path = Path(__file__).parent / "data/code/mss.c"
+    translator = Translator(configs, prompts)
+
+    code_path = Path(__file__).parent / "data/code/aplusb_in_c.c"
     with open(code_path, "r", encoding = "utf-8") as f:
         code = f.read()
     
@@ -18,7 +25,13 @@ def test_translator_correct():
         pass
 
 def test_translator_ce():
-    translator = Translator()
+
+    config_path = Path(__file__).parent / "../config"
+    configs = load_configs(config_path)
+    prompt_path = Path(__file__).parent / "../prompt"
+    prompts = load_prompts(prompt_path)
+
+    translator = Translator(configs, prompts)
 
     code_path = Path(__file__).parent / "data/code/aplusb_in_haskell.hs"
     with open(code_path, "r", encoding = "utf-8") as f:
@@ -28,7 +41,13 @@ def test_translator_ce():
         translator.translate(code)
 
 def test_translator_pe():
-    translator = Translator()
+
+    config_path = Path(__file__).parent / "../config"
+    configs = load_configs(config_path)
+    prompt_path = Path(__file__).parent / "../prompt"
+    prompts = load_prompts(prompt_path)
+
+    translator = Translator(configs, prompts)
 
     code_path = Path(__file__).parent / "data/code/fea_c11.c"
     with open(code_path, "r", encoding = "utf-8") as f:

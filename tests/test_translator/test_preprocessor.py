@@ -1,4 +1,4 @@
-from src.loader import load_config
+from src.loader import load_configs
 from src.translator.checker import CGrammarError
 from src.translator.preprocessor import Preprocessor, ParseError
 
@@ -7,9 +7,10 @@ import pytest
 from pathlib import Path
 
 def create_preprocessor():
-    config_path = Path(__file__).parent / "../../config/general.json"
-    gcc_path = load_config(config_path)["PATH"]["GCC"]
-    fake_libc_path = load_config(config_path)["PATH"]["FAKE_LIBC"]
+    config_path = Path(__file__).parent / "../../config"
+    config = load_configs(config_path)
+    gcc_path = config["GENERAL"]["PATH"]["GCC"]
+    fake_libc_path = config["GENERAL"]["PATH"]["FAKE_LIBC"]
     return Preprocessor(gcc_path, fake_libc_path)
 
 def test_preprocessor_correct():
