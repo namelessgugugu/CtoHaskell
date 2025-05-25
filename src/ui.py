@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from .translator import Translator, TranslateError
+from .translator import TranslateError
 
 class TranslatorUI:
     def __init__(self, master, translator):

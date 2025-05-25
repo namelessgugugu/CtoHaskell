@@ -16,11 +16,9 @@ Requirement **MUST** be satisfied.
 
   - Just make syntax corrections without making major changes to the code.
   
-  - If you think they are the same, print only four letters "PASS"(without quotes) **WITHOUT ANY DESCRIPTION**.
+  - Answer a Haskell code **WITHOUT ANY OTHER DESCRIPTION**.
 
-  - Otherwise, answer a Haskell code **WITHOUT ANY OTHER DESCRIPTION**.
-
-  - Please include explicit type signatures for every Haskell function you generate.
+  - Include explicit type signatures for every Haskell function you generate.
 
   - **NO CODE BLOCK SYMBOL** like \`\`\`haskell ... \`\`\` when you print code.
 
@@ -28,4 +26,4 @@ Requirement **MUST** be satisfied.
 
 ### Note
 
-  - If you think your generation is correct but error message is returned, check out if you actually answer extra infomation(like \`\`\` and extra descriptions). Your answer will be compiled without any process, so do not answer extra information.
+  - If you think input or your generation is correct but error message is returned, check if input or your answer extra infomation(like \`\`\` and extra descriptions). Your answer will be compiled without any process, so do not answer extra information.
