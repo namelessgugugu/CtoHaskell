@@ -3,8 +3,7 @@
     "TEMPERATURE": 0.7,
     "RETRY_LIMIT": 10,
     "PATH": {
-        "GCC": "./external/mingw64/bin/gcc.exe",
-        "FAKE_LIBC": "./external/fake_libc_include",
-        "GHC": "./external/ghc-9.6.7/bin/ghc.exe"
+        "GCC": "gcc.exe",
+        "GHC": "ghc.exe"
     }
 }

@@ -5,6 +5,14 @@ import json
 from json import JSONDecodeError as InvalidJsonError
 from pathlib import Path;
 import os
+import sys
+
+def _get_base_path():
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = Path(__file__).parent.parent
+    return str(base_path)
 
 def load_configs(path):
     """
@@ -44,6 +52,7 @@ def load_prompts(path):
     result = dict()
     for file_name in os.listdir(path):
         file_path = Path(path) / Path(file_name)
+        print(file_path)
         with open(file_path, "r", encoding = "utf-8") as f:
             content = f.read()
         result[str(file_path.stem).upper()] = content
