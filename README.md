@@ -18,7 +18,7 @@
 
 ### 打包方法
 
-  1. 在项目根目录输入 `pyinstaller main.spec` 打包得到可执行文件 `main`。
+  1. 在项目根目录输入 `pyinstaller main.spec` 打包得到 `dist` 下的可执行文件 `main`。
 
   2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`。
 
