@@ -21,6 +21,8 @@ class Preprocessor:
         """
         self._gcc_path = gcc_path
         self._fake_libc_path = self._resolve_fake_libc_path(fake_libc_path)
+        print("origin fake_libc_path : "+ str(fake_libc_path))
+        print("fake_libc_path : "+ str(self._fake_libc_path))
         self._c_checker = CChecker(gcc_path)
         self._c_generator = c_generator.CGenerator()
 
@@ -30,7 +32,8 @@ class Preprocessor:
         
         possible_paths = [
             Path(getattr(sys, '_MEIPASS', '')) / "fake_libc_include",
-            Path(__file__).parent.parent / "external" / "fake_libc_include"
+            Path(__file__).parent.parent / "external" / "fake_libc_include",
+            Path(__file__).parent.parent.parent / "external" / "fake_libc_include"
         ]
         
         for path in possible_paths:
