@@ -23,7 +23,8 @@ class Translator:
         paths = general_config["PATH"]
 
         gcc_path = paths["GCC"]
-        fake_libc_path = paths["FAKE_LIBC"]
+        # fake_libc_path = paths["FAKE_LIBC"]
+        fake_libc_path = "fake_libc_include"
         ghc_path = paths["GHC"]
         temperature = general_config["TEMPERATURE"]
         model = general_config["MODEL"]
