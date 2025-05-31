@@ -1,4 +1,5 @@
 config/secret.json
 external/*
 **/__pycache__
-dist/
+dist/*
+build/*
