@@ -20,6 +20,6 @@
 
   1. 在项目根目录输入 `pyinstaller main.spec` 打包得到 `dist` 下的可执行文件 `main`。
 
-  2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`。
+  2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`（注意：`gcc` 和 `ghc` 应填写绝对路径）。
 
   3. 运行可执行文件 `main` 即可弹出 GUI 窗口。
