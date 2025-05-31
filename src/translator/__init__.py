@@ -1,10 +1,11 @@
-from ..loader import load_config, load_prompt
 from ..assistant import Assistant, ApiError
-from .checker import CChecker, HaskellChecker, CGrammarError
-from .preprocessor import Preprocessor, ParseError
+from .checker import HaskellChecker, CGrammarError
+from .preprocessor import ParseError
 from .p_translator import PTranslator, PTranslateError
-from .optimizer import Optimizer, OptimizeError
-from .verifier import Verifier, VerifierError
+from .agent.optimizer import Optimizer
+from .agent.meaning_fixer import MeaningFixer
+from .agent.grammar_fixer import GrammarFixer
+from .agent import Agent, AgentError
 
 from pathlib import Path
 
@@ -13,31 +14,37 @@ class TranslateError(RuntimeError):
         self.error_message = error_message
 
 class Translator:
-    def __init__(self):
+    def __init__(self, configs, prompts):
         """
-        Create a complete translator.
+        Create a translator.
         """
-        config = load_config(Path(__file__).parent / "../../config/general.json")
-        secret = load_config(Path(__file__).parent / "../../config/secret.json")
+        general_config = configs["GENERAL"]
+        secret_config = configs["SECRET"]
+        paths = general_config["PATH"]
 
-        gcc_path = config["PATH"]["GCC"]
-        fake_libc_path = config["PATH"]["FAKE_LIBC"]
-        ghc_path = config["PATH"]["GHC"]
-        temperature = config["TEMPERATURE"]
-        model = config["MODEL"]
-        api_key = secret["API_KEY"]
-        retry_limit = config["RETRY_LIMIT"]
+        gcc_path = paths["GCC"]
+        # fake_libc_path = paths["FAKE_LIBC"]
+        fake_libc_path = "fake_libc_include"
+        ghc_path = paths["GHC"]
+        temperature = general_config["TEMPERATURE"]
+        model = general_config["MODEL"]
+        api_key = secret_config["API_KEY"]
+        retry_limit = general_config["RETRY_LIMIT"]
+
+        p_translator_prompt = prompts["P_TRANSLATOR"]
+        optimizer_prompt = prompts["OPTIMIZER"]
+        meaning_fixer_prompt = prompts["MEANING_FIXER"]
+        grammar_fixer_prompt = prompts["GRAMMAR_FIXER"]
+        agent_prompt = prompts["AGENT"]
 
         assistant = Assistant(
             api_key,
             model,
             temperature,
-            retry_limit
+            10
         )
 
-        p_translator_prompt = load_prompt(Path(__file__).parent / "../../prompt/p_translator.md")
-        optimizer_prompt = load_prompt(Path(__file__).parent / "../../prompt/optimizer.md")
-        verifier_prompt = load_prompt(Path(__file__).parent / "../../prompt/verifier.md")
+        haskell_checker = HaskellChecker(ghc_path)
 
         self._p_translator = PTranslator(
             assistant,
@@ -48,20 +55,32 @@ class Translator:
             retry_limit
         )
 
-        self._optimizer = Optimizer(
+        grammar_fixer = GrammarFixer(
+            haskell_checker,
             assistant,
-            ghc_path,
+            grammar_fixer_prompt,
+        )
+
+        optimizer = Optimizer(
+            assistant,
             optimizer_prompt,
+        )
+
+        meaning_fixer = MeaningFixer(
+            assistant,
+            meaning_fixer_prompt,
+        )
+
+        self._agent = Agent(
+            assistant,
+            agent_prompt,
+            haskell_checker,
+            grammar_fixer,
+            optimizer,
+            meaning_fixer,
             retry_limit
         )
 
-        self._verifier = Verifier(
-            assistant,
-            gcc_path,
-            ghc_path,
-            verifier_prompt,
-            retry_limit
-        )
     def translate(self, code):
         """
         Translate C to Haskell.
@@ -77,14 +96,13 @@ class Translator:
         """
         try:
             translate_code = self._p_translator.translate(code)
-            optimized_code = self._optimizer.optimize(translate_code)
-            verified_code = self._verifier.verify(code, optimized_code)
+            verified_code = self._agent.run(code, translate_code)
         except ApiError as ae:
             raise TranslateError(f"Fail to call API. Code {ae.code}.")
         except CGrammarError as cge:
             raise TranslateError(f"Invalid input.\n{cge.error_message}")
         except ParseError:
             raise TranslateError("Fail to parse C file.")
-        except (PTranslateError, OptimizeError, VerifierError):
+        except (PTranslateError, AgentError):
             raise TranslateError("Fail to translate Haskell code.")
         return verified_code

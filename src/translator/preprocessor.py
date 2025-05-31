@@ -20,9 +20,30 @@ class Preprocessor:
             fake_libc_path - path of fake_libc_include, used by pycparser.
         """
         self._gcc_path = gcc_path
-        self._fake_libc_path = fake_libc_path
+        self._fake_libc_path = self._resolve_fake_libc_path(fake_libc_path)
+        print("origin fake_libc_path : "+ str(fake_libc_path))
+        print("fake_libc_path : "+ str(self._fake_libc_path))
         self._c_checker = CChecker(gcc_path)
         self._c_generator = c_generator.CGenerator()
+
+    def _resolve_fake_libc_path(self, manual_path):
+        if manual_path and Path(manual_path).exists():
+            return str(Path(manual_path).resolve())
+        
+        possible_paths = [
+            Path(getattr(sys, '_MEIPASS', '')) / "fake_libc_include",
+            Path(__file__).parent.parent / "external" / "fake_libc_include",
+            Path(__file__).parent.parent.parent / "external" / "fake_libc_include"
+        ]
+        
+        for path in possible_paths:
+            if path.exists():
+                return str(path.resolve())
+        
+        raise FileNotFoundError(
+            f"Cannot locate fake_libc_include. Tried:\n" +
+            "\n".join(f"- {p}" for p in possible_paths)
+        )
 
     def preprocess(self, code):
         """

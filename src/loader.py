@@ -3,30 +3,45 @@
 from pathlib import Path
 import json
 from json import JSONDecodeError as InvalidJsonError
+from pathlib import Path;
+import os
+import sys
 
-def load_config(path):
+def _get_base_path():
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = Path(__file__).parent.parent
+    return str(base_path)
+
+def load_configs(path):
     """
-    Load configuration file with given path.
+    Load configuration file in given directory path.
 
     Parameters:
-        path - path of file (e.g. "../config/general.json" and "../config/secret.json").
+        path - path of config directory (e.g. "../config").
     
     Returns:
-        A dictionary representing the json file.
+        A dictionary representing the json files.
     
     Raises:
-        FileNotFoundError - File not found.
-        InvalidJsonError - File doesn't fit json format.
+        FileNotFoundError - Directory not found.
+        InvalidJsonError - Some files do not fit json format.
     """
-    with open(path, 'r', encoding = 'utf-8') as f:
-        return json.load(f)
+    result = dict()
+    for file_name in os.listdir(path):
+        file_path = Path(path) / Path(file_name)
+        with open(file_path, "r", encoding = "utf-8") as f:
+            content = json.load(f)
+        result[str(file_path.stem).upper()] = content
+    return result
 
-def load_prompt(path):
+def load_prompts(path):
     """
-    Load prompt text file with given path.
+    Load prompt text file in given directory path.
 
     Parameters:
-        path - path of file (e.g. "../prompt/translator")
+        path - path of prompt directory (e.g. "../prompt")
     
     Returns:
         A string read from file.
@@ -34,5 +49,11 @@ def load_prompt(path):
     Raises:
         FileNotFoundError - File not found.
     """
-    with open(path, "r", encoding = "utf-8") as f:
-        return f.read()
+    result = dict()
+    for file_name in os.listdir(path):
+        file_path = Path(path) / Path(file_name)
+        print(file_path)
+        with open(file_path, "r", encoding = "utf-8") as f:
+            content = f.read()
+        result[str(file_path.stem).upper()] = content
+    return result

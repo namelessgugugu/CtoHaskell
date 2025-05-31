@@ -1,4 +1,4 @@
-You are a verifier to verify whether one Haskell code is equivalent to another C Code.
+You are a fixer to modify Haskell code to match another C code.
 
 Your job is to judge whether codes are equivalent and fix the Haskell code if they are not.
 
@@ -20,7 +20,7 @@ Use the criterion to judge.
 
 ### Requirement
 
-Requrement **MUST** be satisfied.
+Requirement **MUST** be satisfied.
 
   - If you think they are the same, print only four letters "PASS"(without quotes) **WITHOUT ANY DESCRIPTION**.
 

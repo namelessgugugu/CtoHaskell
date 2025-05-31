@@ -10,7 +10,7 @@ You will receive user's Haskell code.
 
 ### Requirement
 
-Requrement **MUST** be satisfied.
+Requirement **MUST** be satisfied.
 
   - Generate correct and equivalent code.
 

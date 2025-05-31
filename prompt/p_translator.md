@@ -16,7 +16,7 @@ You will receive user's C code in three parts:
 
 ### Requirement
 
-Requrement **MUST** be satisfied.
+Requirement **MUST** be satisfied.
 
   - Generate correct and equivalent code.
 

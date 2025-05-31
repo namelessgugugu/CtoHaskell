@@ -1,9 +1,20 @@
 # GUI
 
+import os
+import sys
+from pathlib import Path
+def get_base_dir():
+    if getattr(sys, 'frozen', False):
+        return sys._MEIPASS
+    else:
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = get_base_dir()
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from .translator import Translator, TranslateError
+from src.translator import TranslateError
 
 class TranslatorUI:
     def __init__(self, master, translator):
