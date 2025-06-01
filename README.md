@@ -4,7 +4,7 @@
 
 ### 部署方法
 
-  1. 下载 **Release** 中的源代码到本地（否则会缺失 `external` 文件夹与 `config/secret.json` 文件，需要自行下载/编写），在项目根目录进行后续操作。
+  1. 下载源码（注意：Github 上的仓库没有 `external/mingw64` 与 `external/ghc-9.6.7`，需自行两个编译器），在项目根目录进行后续操作。
 
   2. 输入 `pip install -r requirement.txt` 安装所需依赖。
 
@@ -20,6 +20,6 @@
 
   1. 在项目根目录输入 `pyinstaller main.spec` 打包得到 `dist` 下的可执行文件 `main`。
 
-  2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`（注意：`gcc` 和 `ghc` 应填写绝对路径）。
+  2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`（注意：`gcc` 和 `ghc` 需填写绝对路径）。
 
   3. 运行可执行文件 `main` 即可弹出 GUI 窗口。
