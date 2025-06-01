@@ -66,7 +66,7 @@ class Agent:
                     "content": reply
                 }
             )
-            # print(f"Debug: now={_},{reply},{haskell_code}")
+            print(f"[Agent]: {reply}")
             if reply == "pass":
                 return haskell_code
             elif reply == "grammar_fix":
@@ -76,5 +76,13 @@ class Agent:
             elif reply == "meaning_fix":
                 haskell_code = self._meaning_fixer.meaning_fix(c_code, haskell_code)
             else:
-                continue
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": "I can't identify what operation you want to execute.\n" \
+                            + "Maybe you response extra content or multiple operation at once.\n" \
+                            + "Please try again. Remember you can only response one of \"pass\", \"grammar_fix\", \"optimize\" and \"meaning_fix\".\n" \
+                            + "**DONOT RESPONSE ANY OTHER DESCRIPTION!!!**\n"
+                    }
+                )
         raise AgentError
