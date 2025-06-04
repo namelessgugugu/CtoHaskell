@@ -4,7 +4,7 @@
 
 ### 部署方法
 
-  1. 下载源码（注意：Github 上的仓库没有 `external/mingw64` 与 `external/ghc-9.6.7`，需自行两个编译器），在项目根目录进行后续操作。
+  1. 下载源码（注意：Github 上的仓库没有 `external/mingw64` 与 `external/ghc-9.6.7`，需自行下载两个编译器），在项目根目录进行后续操作。
 
   2. 输入 `pip install -r requirement.txt` 安装所需依赖。
 
