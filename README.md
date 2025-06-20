@@ -1,5 +1,7 @@
 ## CtoHaskell
 
+[仓库链接](https://github.com/namelessgugugu/CtoHaskell)
+
 从 C 语言到 Haskell 语言的转换器，基于大语言模型。
 
 ### 部署方法
@@ -23,3 +25,4 @@
   2. 将 `main` 与 `config` 文件夹放置在同一级目录下，填写 `config/general.json` 与 `config/secret.json`（注意：`gcc` 和 `ghc` 需填写绝对路径）。
 
   3. 运行可执行文件 `main` 即可弹出 GUI 窗口。
+
